@@ -39,8 +39,38 @@ if (!isset($_SESSION['username'])) {
             </div>
             <div class="d-flex col-4 p-3 justify-content-end">
                 <div class="btn-group pl-auto" role="group">
-                    <button class="btn btn-success" type="button"><i class="fas fa-plus"></i></button>
+                    <button class="btn btn-success" type="button" data-toggle='modal' data-target='#CreateNoteModal'><i class="fas fa-plus"></i></button>
                     <button class="btn btn-danger" type="button" disabled><i class="fas fa-trash"></i></button>
+                </div>
+
+                <div class="modal fade" id='CreateNoteModal' tabindex=-1>
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Create New Note</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+
+                            <div class="modal-body">
+                                <div class="container">
+                                    <div class="col-12">
+                                        <form method='post' action='edit.php'>
+                                            <input class="input-control w-100" type="text" placeholder='Name here' name='title' maxlength="30" required />
+
+                                            <div class="d-flex m-5 justify-content-end">
+                                                <button type="submit" class="btn btn-success mr-3" name='create' value='create'>Create</button>
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                            </div>
+                                        </form>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -72,6 +102,7 @@ if (!isset($_SESSION['username'])) {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/umd/popper.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js"></script>
+
 </body>
 
 </html>
