@@ -1,6 +1,8 @@
 <?php
 session_start();
 
+require 'skeletondb.php';
+
 if (isset($_SESSION['username'])) {
     header('Location: index.php');
     die();
@@ -16,8 +18,7 @@ if (isset($_POST['submit']) && !empty($_POST['submit'])) {
         $pass = $_POST['password'];
 
         // grab password from db here
-        if ($_POST['username'] === "bawbawbaw" && $_POST['password'] === "passWord123") {
-
+        if (authenticate($user, $pass)) {
             $_SESSION['username'] = $_POST['username'];
 
             //redirect to index.php
