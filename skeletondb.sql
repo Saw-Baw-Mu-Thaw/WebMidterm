@@ -3,9 +3,11 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 07, 2025 at 10:51 AM
+-- Generation Time: Apr 08, 2025 at 09:19 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
+create DATABASE skeletondb;
+use skeletondb;
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -31,8 +33,16 @@ CREATE TABLE `notes` (
   `NoteID` int(11) NOT NULL,
   `Title` varchar(30) NOT NULL,
   `Username` varchar(30) NOT NULL,
-  `location` varchar(50) NOT NULL
+  `location` varchar(50) NOT NULL,
+  `date` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `notes`
+--
+
+INSERT INTO `notes` (`NoteID`, `Title`, `Username`, `location`, `date`) VALUES
+(1, 'demo', 'bawbawbaw', 'notes/demo.txt', '2025-04-07');
 
 -- --------------------------------------------------------
 
@@ -78,7 +88,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `notes`
 --
 ALTER TABLE `notes`
-  MODIFY `NoteID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `NoteID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Constraints for dumped tables

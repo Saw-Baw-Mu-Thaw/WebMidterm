@@ -20,7 +20,9 @@ function get_notes($username)
     mysqli_stmt_execute($statement);
     $result = mysqli_stmt_get_result($statement);
     $rows = mysqli_fetch_all($result, MYSQLI_ASSOC);
-    die($rows);
+    mysqli_close($conn);
+    return $rows;
+    // var_dump($rows);
 }
 
 function authenticate($username, $password)
@@ -34,7 +36,8 @@ function authenticate($username, $password)
 
     $row = mysqli_fetch_assoc($res);
 
-    print_r($row);
+    // print_r($row);
+    mysqli_close($conn);
 
     if ($row['Password'] === $password) {
         // echo 'true';
@@ -43,4 +46,40 @@ function authenticate($username, $password)
         // echo 'false';
         return false;
     }
+}
+
+function delete_note($username, $title)
+{
+    $conn = get_conn();
+
+    $statement = mysqli_prepare($conn, "Delete From Notes where Username = ? And Title = ?");
+    mysqli_stmt_bind_param($statement, "ss", $username, $title);
+    $res = mysqli_stmt_execute($statement);
+    return $res;
+}
+
+function create_note($username, $title)
+{
+    $conn = get_conn();
+
+    $location = 'notes/' . $title . '.txt';
+    $statement = mysqli_prepare($conn, "Insert into Notes(Title, Username, location, date) Values (?,?,?,NOW());");
+    mysqli_stmt_bind_param($statement, "sss", $title, $username, $location);
+    $res = mysqli_execute($statement);
+    mysqli_close($conn);
+    return $res;
+}
+
+
+function update_note($old, $new, $username)
+{
+    $conn = get_conn();
+    $location = 'notes/' . $new . '.txt';
+
+    $query = "Update Notes Set Title = ?, location = ?, date = NOW() Where Title = ? And Username = ?;";
+    $statement = mysqli_prepare($conn, $query);
+    mysqli_stmt_bind_param($statement, "ssss", $new, $location, $old, $username);
+    $res = mysqli_execute($statement);
+    mysqli_close($conn);
+    return $res;
 }
