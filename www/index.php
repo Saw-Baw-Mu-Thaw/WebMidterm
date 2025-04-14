@@ -3,14 +3,16 @@ session_start();
 
 require 'skeletondb.php';
 
-$res = true;
-$error = "";
-$rows = get_notes($_SESSION['username']);
-
 // checks if user is logged in
 if (!isset($_SESSION['username'])) {
     header('Location: login.php');
 }
+
+$res = true;
+$error = "";
+$rows = get_notes($_SESSION['username']);
+
+
 
 // the code that handles deleting
 if (isset($_POST['delete']) && !empty($_POST['delete'])) {

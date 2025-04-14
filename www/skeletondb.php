@@ -13,7 +13,7 @@ function get_conn()
         $password = "";
         $database = "skeletondb";
     } else {
-        $host = "mysql";
+        $host = "mysql-server";
         $user = "root";
         $password = getenv('mariadbPwd');
         $database = "skeletondb";

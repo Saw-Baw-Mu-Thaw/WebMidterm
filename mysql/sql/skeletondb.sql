@@ -6,8 +6,7 @@
 -- Generation Time: Apr 08, 2025 at 09:19 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
-create DATABASE
-IF NOT EXISTS skeletondb ;
+create DATABASE IF NOT EXISTS skeletondb ;
 USE skeletondb;
 
 SET SQL_MODE
@@ -34,14 +33,10 @@ SET time_zone
 
 CREATE TABLE `notes`
 (
-  `NoteID` int
-(11) NOT NULL,
-  `Title` varchar
-(30) NOT NULL,
-  `Username` varchar
-(30) NOT NULL,
-  `location` varchar
-(50) NOT NULL,
+  `NoteID` int(11) NOT NULL,
+  `Title` varchar(30) NOT NULL,
+  `Username` varchar(30) NOT NULL,
+  `location` varchar(50) NOT NULL,
   `date` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -49,10 +44,7 @@ CREATE TABLE `notes`
 -- Dumping data for table `notes`
 --
 
-INSERT INTO `notes` (`
-NoteID`,
-`Title
-`, `Username`, `location`, `date`) VALUES
+INSERT INTO `notes` (`NoteID`,`Title`, `Username`, `location`, `date`) VALUES
 (1, 'demo', 'bawbawbaw', 'notes/demo.txt', '2025-04-07');
 
 -- --------------------------------------------------------
@@ -73,10 +65,7 @@ CREATE TABLE `users`
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`
-Username`,
-`Password
-`) VALUES
+INSERT INTO `users` (`Username`,`Password`) VALUES
 ('bawbawbaw', 'passWord123&'),
 ('sundowner', 'Testword656#');
 
