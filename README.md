@@ -4,4 +4,4 @@
 3. Go to the cloned directory
 4. Run the following command.
 `docker compose up`
-5. On your browser, go to localhost:3399/ or alternatively, launch it from docker desktop
+5. On your browser, go to localhost:8080/ or alternatively, launch it from docker desktop
