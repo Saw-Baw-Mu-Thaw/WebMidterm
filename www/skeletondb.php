@@ -2,7 +2,23 @@
 
 function get_conn()
 {
-    $conn = mysqli_connect("127.0.0.1", "root", "", "skeletondb");
+    $host = "";
+    $user = "";
+    $password = "";
+    $database = "";
+
+    if (getenv('Environment') === 'Testing') {
+        $host = "127.0.0.1";
+        $user = "root";
+        $password = "";
+        $database = "skeletondb";
+    } else {
+        $host = "mysql-server";
+        $user = "root";
+        $password = getenv('mariadbPwd');
+        $database = "skeletondb";
+    }
+    $conn = mysqli_connect($host, $user, $password, $database);
     if ($conn === false) {
         echo mysqli_connect_error() . '</br>';
         die();
