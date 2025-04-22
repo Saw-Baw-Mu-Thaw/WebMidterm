@@ -5,22 +5,28 @@ require 'skeletondb.php';
 
 $res = true;
 $error = "";
-$rows = get_notes($_SESSION['username']);
 
 // checks if user is logged in
 if (!isset($_SESSION['username'])) {
     header('Location: login.php');
 }
 
+$rows = get_notes($_SESSION['username']);
+
+
 // the code that handles deleting
 if (isset($_POST['delete']) && !empty($_POST['delete'])) {
 
     //send delete signal to db
-    $res = delete_note($_SESSION['username'], $_POST['delete']);
+    $dbres = delete_note($_SESSION['username'], $_POST['delete']);
     //then unlink file here
-    unlink("/notes/" . $_POST['delete']);
+    $fileres = unlink("notes/" . $_POST['delete'] . '.txt');
     //then reload this page
-    header('Refresh:0');
+    if (!$dbres || !$fileres) {
+        echo ('There\'s been a problem');
+    } else {
+        header('Refresh:0');
+    }
 }
 
 // code that handles the create redirect

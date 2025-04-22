@@ -2,7 +2,23 @@
 
 function get_conn()
 {
-    $conn = mysqli_connect("127.0.0.1", "root", "", "skeletondb");
+    $host = "";
+    $user = "";
+    $password = "";
+    $database = "";
+
+    if (getenv('Environment') === 'Testing') {
+        $host = "127.0.0.1";
+        $user = "root";
+        $password = "";
+        $database = "skeletondb";
+    } else {
+        $host = "mysql-server";
+        $user = "root";
+        $password = getenv('mariadbPwd');
+        $database = "skeletondb";
+    }
+    $conn = mysqli_connect($host, $user, $password, $database);
     if ($conn === false) {
         echo mysqli_connect_error() . '</br>';
         die();
@@ -34,16 +50,22 @@ function authenticate($username, $password)
     mysqli_stmt_execute($statement);
     $res = mysqli_stmt_get_result($statement);
 
+
     $row = mysqli_fetch_assoc($res);
 
-    // print_r($row);
+    if ($row == null) {
+        return false;
+    } else if ($row == false) {
+        return false;
+    }
+
     mysqli_close($conn);
 
     if ($row['Password'] === $password) {
-        // echo 'true';
+
         return true;
     } else {
-        // echo 'false';
+
         return false;
     }
 }
@@ -76,10 +98,27 @@ function update_note($old, $new, $username)
     $conn = get_conn();
     $location = 'notes/' . $new . '.txt';
 
-    $query = "Update Notes Set Title = ?, location = ?, date = NOW() Where Title = ? And Username = ?;";
+    $id = get_id($username, $old, $conn);
+
+    $query = "Update Notes Set Title = ?, location = ?, date = NOW() Where NoteID = ?;";
     $statement = mysqli_prepare($conn, $query);
-    mysqli_stmt_bind_param($statement, "ssss", $new, $location, $old, $username);
-    $res = mysqli_execute($statement);
+    if (mysqli_stmt_bind_param($statement, "ssi", $new, $location, $id)) {
+        $res = mysqli_execute($statement);
+    } else {
+        return false;
+    }
     mysqli_close($conn);
     return $res;
+}
+
+function get_id($username, $title, $conn)
+{
+    $query = "Select NoteID From Notes Where Title = ? And Username = ?";
+
+    $stmt = mysqli_prepare($conn, $query);
+    mysqli_stmt_bind_param($stmt, "ss", $title, $username);
+    mysqli_execute($stmt);
+    $row = mysqli_stmt_get_result($stmt);
+    $res = mysqli_fetch_assoc($row);
+    return $res['NoteID'];
 }

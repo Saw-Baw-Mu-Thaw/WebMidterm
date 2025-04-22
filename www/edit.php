@@ -85,21 +85,21 @@ if (isset($_POST['logout']) && !empty($_POST['logout'])) {
 
         <div class="row">
             <div class="col-12 p-3">
-                <form method="post" action=""> <!-- send to edit.php -->
-                    <span class="d-flex justify-content-start">
-                        <input class="border-0 h2 form-control" type="text" name="title" id="title"
-                            value="<?= $title ?>" />
-                        <button class="btn btn-success justify-self-end" type="button" id='saveBtn'><i
-                                class="far fa-save"></i></button>
-                        <button class="btn btn-primary justify-self-end" type="button" id="homeBtn">
-                            <i class="fas fa-home"></i></button>
-                    </span>
+                <!-- <form method="post" action=""> send to edit.php -->
+                <span class="d-flex justify-content-start">
+                    <input class="border-0 h2 form-control" type="text" name="title" id="title"
+                        value="<?= $title ?>" />
+                    <button class="btn btn-success justify-self-end" type="button" id='saveBtn'><i
+                            class="far fa-save"></i></button>
+                    <button class="btn btn-primary justify-self-end" type="button" id="homeBtn">
+                        <i class="fas fa-home"></i></button>
+                </span>
 
-                    <hr />
-                    <div class="form-group">
-                        <textarea class="form-control border-0" id='textareaEle' name="content" id="content" rows="13"><?= $content ?></textarea>
-                    </div>
-                </form>
+                <hr />
+                <div class="form-group">
+                    <textarea class="form-control border-0" id='textareaEle' name="content" id="content" rows="13"><?= $content ?></textarea>
+                </div>
+                <!-- </form> -->
             </div>
         </div>
 
@@ -139,7 +139,7 @@ if (isset($_POST['logout']) && !empty($_POST['logout'])) {
         });
 
         $('#SaveLeaveBtn').on('click', () => {
-            saveNote(redirect = true);
+            saveNote(true);
         });
 
         $('#NoSaveBtn').on('click', () => {
@@ -158,10 +158,12 @@ if (isset($_POST['logout']) && !empty($_POST['logout'])) {
 
         function saveNote(redirect = false) {
 
-            if (contentSaved == false || titleSaved == false) {
+            if (contentSaved === false || titleSaved === false) {
                 title = $('#title').val();
                 content = $('#textareaEle').val();
                 titleChanged = !titleSaved;
+
+                console.log("title:" + title + "\ncontent:" + content + "\ntitleChanged:" + titleChanged + "\noldTitle:" + oldTitle);
 
                 $.ajax({
                     url: 'save.php',
@@ -175,6 +177,7 @@ if (isset($_POST['logout']) && !empty($_POST['logout'])) {
                     type: "POST",
                     dataType: "json"
                 }).done(function(response) {
+                    console.log('POST sent');
 
                     if (response['success'] == true) {
                         // success
@@ -182,7 +185,7 @@ if (isset($_POST['logout']) && !empty($_POST['logout'])) {
                         titleSaved = true;
                         $('#saveBtn').prop('disabled', true);
 
-                        if (redirect) {
+                        if (redirect == true) {
                             window.location.replace('index.php');
                         }
                     } else {

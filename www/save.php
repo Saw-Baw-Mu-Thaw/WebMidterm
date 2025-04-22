@@ -15,8 +15,8 @@ if (isset($_POST['action']) && !empty($_POST['action'])) {
     $content = $_POST['content'];
     $location = 'notes/' . $title . '.txt';
 
-    if ($_POST['titleChanged'] === true) {
-        if (file_exists($location) === true) {
+    if ($_POST['titleChanged'] === 'true') {
+        if (file_exists($location) == true) {
             $array = array("success" => false, "reason" => "File name taken");
             header('Content-Type: application/json');
             echo json_encode($array);
@@ -25,11 +25,11 @@ if (isset($_POST['action']) && !empty($_POST['action'])) {
         // create that file
         write_file($location, $content);
         // delete the old file
-        unlink("notes/" . $old . ".txt");
+        $fileres = unlink("notes/" . $old . ".txt");
         // update db entry
         $res = update_note($old, $title, $_SESSION['username']);
 
-        if ($res === false) {
+        if ($res == false || $fileres == false) {
             $array = array("success" => false, "reason" => "Database update error");
             header('Content-Type: application/json');
             echo json_encode($array);
